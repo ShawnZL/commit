@@ -72,7 +72,8 @@ std::list<T> sequential_quick_sort(std::list<T> input) {
     std::list<T> result;
     result.splice(result.begin(), input, input.begin());
     // splice 把input.begin()元素剪切到result.begin()位置
-    T const& pivot = *result.begin();
+    T const& pivot = *result.begin(); // 常量引用 这样可以在不复制元素的情况下使用 pivot，并在比较操作中进行引用传递。这对于排序操作来说是有效的，因为在排序过程中只是进行比较，而不是修改元素的值。
+    // 返回一个迭代器
     auto divide_point = std::partition(input.begin(), input.end(),
                                        [&](T const& t) { return t < pivot ; });
    // lambda 表达式 [&](T const& t) { return t < pivot ; } 是作为谓词函数传递给 std::partition 的。
@@ -90,7 +91,7 @@ std::list<T> sequential_quick_sort(std::list<T> input) {
    auto new_higher(sequential_quick_sort(std::move(input)));
 
     result.splice(result.end(), new_higher);  // 合并higher
-    result.splice(result.begin(), new_lower.get());  // 合并lower
+    result.splice(result.begin(), new_lower.get());  // 合并lower，不能忘记.get，同时你期待的类型就是放在std::future之后
     return result;
 }
 
