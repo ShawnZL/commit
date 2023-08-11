@@ -36,8 +36,8 @@ std::list<T> sequential_quick_sort(std::list<T> &input) {
     std::future<std::list<T>> new_lower(
             std::async(sequential_quick_sort<T>, std::move(lower_part)));
     auto new_higher(sequential_quick_sort(std::move(input)));
-    result.splice(result.end(), new_lower.get());
-    result.splice(result.begin(), new_higher);
+    result.splice(result.begin(), new_lower.get());
+    result.splice(result.end(), new_higher);
     return result;
 }
 
